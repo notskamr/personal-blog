@@ -28,7 +28,7 @@ const { title, bodyClass } = Astro.props;
     />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
-    <ViewTransitions fallback="none" />
+    <ViewTransitions fallback="swap" />
   </head>
   <body
     class:list={[

@@ -48,8 +48,11 @@ const {
 </a>
 <script>
   import { parseIsoDatetime } from "../utils/functions";
-  const createdAts = document.querySelectorAll(".created_at");
-  createdAts.forEach((elem) => {
-    elem.textContent = parseIsoDatetime(elem.id);
+
+  document.addEventListener("astro:page-load", () => {
+    const createdAts = document.querySelectorAll(".created_at");
+    createdAts.forEach((elem) => {
+      elem.textContent = parseIsoDatetime(elem.id);
+    });
   });
 </script>
