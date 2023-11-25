@@ -1,0 +1,46 @@
+---
+interface Props {
+  title: string;
+  bodyClass?: string;
+}
+
+import { ViewTransitions } from "astro:transitions";
+
+const { title, bodyClass } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth motion-reduce:scroll-auto">
+  <head>
+    <slot name="headTop" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;1,100;1,200;1,300;1,400;1,500;1,600&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <ViewTransitions fallback="none" />
+  </head>
+  <body
+    class:list={[
+      "bg-neutral-900 print:bg-white overflow-y-scroll antialiased text-white",
+      bodyClass ?? "",
+    ]}
+  >
+    <slot />
+    <style is:global>
+      hr {
+        @apply w-full border-[1px] border-neutral-700 print:border-neutral-500 mt-4 mb-4 rounded-full;
+      }
+    </style>
+  </body>
+</html>

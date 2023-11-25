@@ -1,0 +1,48 @@
+---
+import { parseIsoDatetime } from "../utils/functions";
+interface Image {
+  url: string;
+  width?: number;
+  height?: number;
+}
+interface Props {
+  title: string;
+  description: string;
+  href: string;
+  createdAt: string;
+  image?: Image;
+}
+const {
+  title,
+  description,
+  href,
+  createdAt,
+  image = { url: "https://placehold.co/900x600", width: 900, height: 900 },
+} = Astro.props;
+---
+
+<a
+  href={href}
+  class="w-full flex flex-col group p-4 bg-[#1c1e24] rounded-xl hover:-translate-y-1 duration-150"
+>
+  <img
+    src={image.url}
+    width={image.width}
+    height={image.height}
+    class="w-full h-[250px] md:h-[300px] object-cover object-center mb-2"
+  />
+  <div class="flex justify-between items-center">
+    <div>
+      <h2 class="text-xl font-semibold">{title}</h2>
+    </div>
+    <div>
+      {parseIsoDatetime(createdAt)}
+    </div>
+  </div>
+  <h3 class="font-medium">
+    {
+      description.split(" ").slice(0, 50).join(" ") +
+        (description.split(" ").length >= 50 ? "..." : "")
+    }
+  </h3>
+</a>

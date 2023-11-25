@@ -1,0 +1,18 @@
+---
+import Nav from "../../components/Nav.astro";
+import PostCard from "../../components/PostCard.astro";
+import PostsDisplay from "../../components/PostsDisplay.astro";
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="Posts">
+  <main
+    class="mx-auto max-w-screen-lg scroll-smooth motion-reduce:scroll-auto font-sans text-white py-8 px-4"
+  >
+    <div class="w-full flex justify-between items-center">
+      <h1 class="text-3xl md:text-4xl font-bold">Posts</h1>
+    </div>
+    <Nav />
+    <PostsDisplay />
+  </main>
+</Layout>

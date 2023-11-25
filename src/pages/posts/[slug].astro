@@ -1,0 +1,18 @@
+---
+import { getPostWithSlug } from "../../utils/posts";
+import PostLayout from "../../layouts/PostLayout.astro";
+const { slug } = Astro.params;
+if (slug) {
+  var post = await getPostWithSlug(slug);
+} else {
+  return Astro.redirect(404);
+}
+---
+
+<PostLayout
+  postTitle={post.title}
+  description={post.description}
+  createdAt={post.date_created}
+  updatedAt={post.date_created}
+  content={post.content}
+/>

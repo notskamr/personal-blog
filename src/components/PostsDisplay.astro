@@ -1,0 +1,36 @@
+---
+import { getPosts } from "../utils/posts";
+import PostCard from "./PostCard.astro";
+
+interface Props {
+  limit?: number;
+}
+const { limit } = Astro.props;
+
+const blogs = await getPosts(limit);
+---
+
+<div
+  id="post-display"
+  class="grid sm:grid-cols-2 grid-cols-1 gap-y-3 gap-x-4 md:gap-x-8"
+>
+  {
+    blogs?.map(async (post) => (
+      <PostCard
+        title={post.title}
+        description={post.description}
+        href={`/posts/${post.slug}`}
+        createdAt={post.date_created}
+        image={
+          post.image
+            ? {
+                url: `https://blog-directus.vsahni.me/assets/${post.image}/key?=blog/${post.slug}.png`,
+                width: 900,
+                height: 600,
+              }
+            : undefined
+        }
+      />
+    ))
+  }
+</div>
