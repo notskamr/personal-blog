@@ -6,7 +6,7 @@ import type { BlogPost } from "../../utils/types";
 
 const searchParams = new URL(Astro.request.url).searchParams;
 const key = searchParams.get("key");
-if (key !== "chicken-eating-food") {
+if (key !== "chicken-eating-food-NF37D") {
   return new Response(
     JSON.stringify({
       status: 401,
