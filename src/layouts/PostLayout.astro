@@ -10,9 +10,16 @@ interface Props {
   description: string;
   navActive?: boolean;
 }
-const { postTitle, content, publishedAt, updatedAt, description, navActive = true } = Astro.props;
-const formattedUpdated = formatIsoDatetime(updatedAt)
-const formattedPublished = formatIsoDatetime(publishedAt)
+const {
+  postTitle,
+  content,
+  publishedAt,
+  updatedAt,
+  description,
+  navActive = true,
+} = Astro.props;
+const formattedUpdated = formatIsoDatetime(updatedAt);
+const formattedPublished = formatIsoDatetime(publishedAt);
 ---
 
 <Layout title={`${postTitle} - Varun Sahni`}>
@@ -22,32 +29,45 @@ const formattedPublished = formatIsoDatetime(publishedAt)
     <div class="w-full flex flex-col">
       <h1 class="text-3xl md:text-4xl font-bold mb-1">{postTitle}</h1>
       <p class="text-lg md:text-xl mb-1">{description}</p>
-      <p class="text-base">
+      <p class="text-base published" data-text={formattedPublished}>
         Published on {formattedPublished}
       </p>
-      {formattedPublished != formattedUpdated ? <h4 class="text-white/80 italic">Last updated on {formattedUpdated}</h4> : <></>}
+      <p class="text-white/70 italic updated" data-text={formattedUpdated}></p>
     </div>
-    <Nav navClass={!navActive ? "pointer-events-none" : ""}/>
-    <div class="prose prose-invert md:prose-lg prose-h2:mb-2" set:html={content} />
+    <Nav navClass={!navActive ? "pointer-events-none" : ""} />
+    <div
+      class="prose prose-invert md:prose-lg prose-h2:mb-2"
+      set:html={content}
+    />
   </main>
   <div class="mx-auto max-w-screen-lg px-2">
-    <hr class="!rounded-none !border-neutral-800"/>
+    <hr class="!rounded-none !border-neutral-800" />
   </div>
   <div class="giscus max-w-screen-lg px-2 mx-auto py-8"></div>
-  <script src="https://giscus.app/client.js" async
-  data-repo="notskamr/blog-giscus"
-  data-repo-id="R_kgDOKx2DuA"
-  data-category="Announcements"
-  data-category-id="DIC_kwDOKx2DuM4CbPME"
-  data-mapping="pathname"
-  data-strict="0"
-  data-reactions-enabled="1"
-  data-emit-metadata="0"
-  data-input-position="top"
-  data-theme="preferred_color_scheme"
-  data-lang="en"
-  data-loading="lazy"
-  crossorigin="anonymous"
-  async>
-</script>
+  <script
+    src="https://giscus.app/client.js"
+    async
+    data-repo="notskamr/blog-giscus"
+    data-repo-id="R_kgDOKx2DuA"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOKx2DuM4CbPME"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="preferred_color_scheme"
+    data-lang="en"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async></script>
+  <script>
+    document.addEventListener("astro:page-load", () => {
+      const published = document.querySelector(".published") as HTMLElement;
+      const updated = document.querySelector(".updated") as HTMLElement;
+      if (published.dataset.text !== updated.dataset.text) {
+        updated.innerText = `Last updated on ${updated.dataset.text}`;
+      }
+    });
+  </script>
 </Layout>

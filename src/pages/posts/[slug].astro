@@ -15,7 +15,7 @@ const post = Astro.props;
 <PostLayout
   postTitle={post.title}
   description={post.description}
-  createdAt={post.date_created}
-  updatedAt={post.date_created}
+  publishedAt={post.published_at}
+  updatedAt={post.date_updated}
   content={post.content}
 />
