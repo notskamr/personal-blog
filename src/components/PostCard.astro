@@ -9,14 +9,14 @@ interface Props {
   title: string;
   description: string;
   href: string;
-  createdAt: string;
+  publishedAt: string;
   image?: Image;
 }
 const {
   title,
   description,
   href,
-  createdAt,
+  publishedAt,
   image = { url: "https://placehold.co/900x600", width: 900, height: 900 },
 } = Astro.props;
 ---
@@ -35,7 +35,7 @@ const {
     <div>
       <h2 class="text-xl font-semibold">{title}</h2>
     </div>
-    <div class="created_at" id={createdAt}>
+    <div class="created_at" id={publishedAt}>
       <!-- {parseIsoDatetime(createdAt)} -->
     </div>
   </div>
@@ -50,8 +50,8 @@ const {
   import { parseIsoDatetime } from "../utils/functions";
 
   document.addEventListener("astro:page-load", () => {
-    const createdAts = document.querySelectorAll(".created_at");
-    createdAts.forEach((elem) => {
+    const publishedAts = document.querySelectorAll(".created_at");
+    publishedAts.forEach((elem) => {
       elem.textContent = parseIsoDatetime(elem.id);
     });
   });

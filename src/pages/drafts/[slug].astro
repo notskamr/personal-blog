@@ -6,7 +6,9 @@ import type { BlogPost } from "../../utils/types";
 
 const searchParams = new URL(Astro.request.url).searchParams;
 const key = searchParams.get("key");
-if (key !== "chicken-eating-food-NF37D") {
+
+// this doesnt really matter - you could replace this with a const and it would pass through it; the API won't let you in, however
+if (key !== import.meta.env.DRAFTS_KEY) {
   return new Response(
     JSON.stringify({
       status: 401,
@@ -14,6 +16,7 @@ if (key !== "chicken-eating-food-NF37D") {
     })
   );
 }
+
 const { slug } = Astro.params;
 if (!slug) {
   return new Response(
@@ -40,7 +43,7 @@ try {
   navActive={false}
   postTitle={post.title}
   description={post.description}
-  createdAt={post.date_created}
+  publishedAt={post.published_at}
   updatedAt={post.date_created}
   content={post.content}
 />

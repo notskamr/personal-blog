@@ -2,27 +2,61 @@ export function parseIsoDatetime(isoDatetime: string) {
     // Parse the input ISO datetime string
     const inputDatetime = new Date(isoDatetime);
     const currentDatetime = new Date();
-
     // Calculate the time difference in milliseconds
-    const timeDifference = currentDatetime.valueOf() - inputDatetime.valueOf();
-
+    const timeDifference: number = Math.floor((currentDatetime.getTime() - inputDatetime.getTime()) / 1000);
     // Define time units and their thresholds in milliseconds
-    const timeUnits = [
-        { unit: 'day', threshold: 365 * 24 * 60 * 60 * 1000 },
-        { unit: 'hour', threshold: 60 * 60 * 1000 },
-        { unit: 'minute', threshold: 60 * 1000 },
-        { unit: 'second', threshold: 1000 }
-    ];
-
-    // Iterate through time units and find the appropriate one
-    for (const { unit, threshold } of timeUnits) {
-        if (timeDifference >= threshold) {
-            const timeValue = Math.floor(timeDifference / threshold);
-            return `${timeValue} ${unit}${timeValue > 1 ? 's' : ''} ago`;
+    const intervals: Record<string, number> = {
+        year: 31536000,
+        month: 2592000,
+        week: 604800,
+        day: 86400,
+        hour: 3600,
+        minute: 60,
+        second: 1,
+    };
+    let counter: number;
+    for (const unit in intervals) {
+        counter = Math.floor(timeDifference / intervals[unit]);
+        if (counter > 0) {
+            if (counter === 1) {
+                return `${counter} ${unit} ago`; // singular (1 day ago)
+            } else {
+                return `${counter} ${unit}s ago`; // plural (2 days ago)
+            }
         }
     }
-    return "Just now";
+    return 'Just now';
 }
+
+function timeAgo(date: Date): string {
+    const seconds: number = Math.floor((new Date().getTime() - date.getTime()) / 1000);
+    const intervals: Record<string, number> = {
+        year: 31536000,
+        month: 2592000,
+        week: 604800,
+        day: 86400,
+        hour: 3600,
+        minute: 60,
+        second: 1,
+    };
+
+    let counter: number;
+
+    for (const unit in intervals) {
+        counter = Math.floor(seconds / intervals[unit]);
+
+        if (counter > 0) {
+            if (counter === 1) {
+                return `${counter} ${unit} ago`; // singular (1 day ago)
+            } else {
+                return `${counter} ${unit}s ago`; // plural (2 days ago)
+            }
+        }
+    }
+
+    return 'Just now';
+}
+
 
 export function formatIsoDatetime(isoDatetime: string) {
     const months = [

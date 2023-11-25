@@ -4,15 +4,15 @@ import { parseIsoDatetime, formatIsoDatetime } from "../utils/functions";
 import Layout from "./Layout.astro";
 interface Props {
   postTitle: string;
-  createdAt: string;
+  publishedAt: string;
   updatedAt: string;
   content: string;
   description: string;
   navActive?: boolean;
 }
-const { postTitle, content, createdAt, updatedAt, description, navActive = true } = Astro.props;
+const { postTitle, content, publishedAt, updatedAt, description, navActive = true } = Astro.props;
 const formattedUpdated = formatIsoDatetime(updatedAt)
-const formattedCreated = formatIsoDatetime(createdAt)
+const formattedPublished = formatIsoDatetime(publishedAt)
 ---
 
 <Layout title={`${postTitle} - Varun Sahni`}>
@@ -23,9 +23,9 @@ const formattedCreated = formatIsoDatetime(createdAt)
       <h1 class="text-3xl md:text-4xl font-bold mb-1">{postTitle}</h1>
       <p class="text-lg md:text-xl mb-1">{description}</p>
       <p class="text-base">
-        Published on {formattedCreated}
+        Published on {formattedPublished}
       </p>
-      {formattedCreated != formattedUpdated ? <h4 class="text-white/80 italic">Last updated on {formattedUpdated}</h4> : <></>}
+      {formattedPublished != formattedUpdated ? <h4 class="text-white/80 italic">Last updated on {formattedUpdated}</h4> : <></>}
     </div>
     <Nav navClass={!navActive ? "pointer-events-none" : ""}/>
     <div class="prose prose-invert md:prose-lg prose-h2:mb-2" set:html={content} />

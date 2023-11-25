@@ -20,7 +20,7 @@ const blogs = await getPosts(limit);
         title={post.title}
         description={post.description}
         href={`/posts/${post.slug}`}
-        createdAt={post.date_created}
+        publishedAt={post.published_at}
         image={
           post.image
             ? {

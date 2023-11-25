@@ -1,17 +1,23 @@
-import { createDirectus, rest, readItems, readItem } from "@directus/sdk";
+import { createDirectus, rest, readItems, readItem, staticToken } from "@directus/sdk";
 import type { BlogsSchema, BlogPost } from "./types";
 
 
 const client = createDirectus<BlogsSchema>(
     "https://blog-directus.vsahni.me"
-).with(rest());
+).with(rest()).with(staticToken(import.meta.env.API_TOKEN));
+
 export async function getPosts(limit: number = 4, onlyPublished: boolean = true) {
     let blogs = await client.request<BlogPost[]>(
-        readItems("blogs", { limit: limit, sort: "-date_created" })
+        readItems("blogs", {
+            limit: limit, sort: "-date_created", ...(onlyPublished && {
+                filter: {
+                    status: {
+                        _eq: "published",
+                    }
+                }
+            })
+        })
     );
-    if (onlyPublished) {
-        blogs = blogs.filter(blog => blog.status === "published")
-    }
     return blogs
 }
 
