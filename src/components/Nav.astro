@@ -1,6 +1,17 @@
+---
+interface Props {
+  navClass?: string;
+}
+
+const { navClass } = Astro.props;
+---
+
 <hr />
 <nav
-  class="flex text-lg items-center gap-4 mt-3 child:underline child:underline-offset-2"
+  class:list={[
+    "flex text-lg items-center gap-4 mt-3 child:underline child:underline-offset-2",
+    navClass,
+  ]}
 >
   <a href="/">Home</a>
   <a href="https://vsahni.me">Portfolio</a>

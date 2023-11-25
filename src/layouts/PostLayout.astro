@@ -8,8 +8,9 @@ interface Props {
   updatedAt: string;
   content: string;
   description: string;
+  navActive?: boolean;
 }
-const { postTitle, content, createdAt, updatedAt, description } = Astro.props;
+const { postTitle, content, createdAt, updatedAt, description, navActive = true } = Astro.props;
 const formattedUpdated = formatIsoDatetime(updatedAt)
 const formattedCreated = formatIsoDatetime(createdAt)
 ---
@@ -26,7 +27,7 @@ const formattedCreated = formatIsoDatetime(createdAt)
       </p>
       {formattedCreated != formattedUpdated ? <h4 class="text-white/80 italic">Last updated on {formattedUpdated}</h4> : <></>}
     </div>
-    <Nav />
+    <Nav navClass={!navActive ? "pointer-events-none" : ""}/>
     <div class="prose prose-invert prose-lg prose-h2:mb-2" set:html={content} />
   </main>
 </Layout>

@@ -1,12 +1,12 @@
 ---
 export const prerender = false;
-import { getPost } from "../../utils/posts";
+import { getPostWithSlug } from "../../utils/posts";
 import PostLayout from "../../layouts/PostLayout.astro";
 import type { BlogPost } from "../../utils/types";
 
 const searchParams = new URL(Astro.request.url).searchParams;
 const key = searchParams.get("key");
-if (key !== "NF37DBnlGPmVf7r9T09FjDSQeWmnxbEn") {
+if (key !== "chicken-eating-food") {
   return new Response(
     JSON.stringify({
       status: 401,
@@ -14,29 +14,30 @@ if (key !== "NF37DBnlGPmVf7r9T09FjDSQeWmnxbEn") {
     })
   );
 }
-const { id } = Astro.params;
-if (!id) {
+const { slug } = Astro.params;
+if (!slug) {
   return new Response(
     JSON.stringify({
       status: 400,
-      message: "No inputted post id",
+      message: "No slug",
     })
   );
 }
 let post: BlogPost;
 try {
-  post = await getPost(id);
+  post = await getPostWithSlug(slug);
 } catch {
   return new Response(
     JSON.stringify({
       status: 404,
-      message: "This id doesn't exist",
+      message: "This post doesn't exist",
     })
   );
 }
 ---
 
 <PostLayout
+  navActive={false}
   postTitle={post.title}
   description={post.description}
   createdAt={post.date_created}
