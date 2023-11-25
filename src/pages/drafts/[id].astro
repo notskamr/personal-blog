@@ -1,0 +1,45 @@
+---
+export const prerender = false;
+import { getPost, getPosts } from "../../utils/posts";
+import PostLayout from "../../layouts/PostLayout.astro";
+import { BlogPost } from "../../utils/types";
+
+const searchParams = new URL(Astro.request.url).searchParams;
+const key = searchParams.get("key");
+if (key !== "NF37DBnlGPmVf7r9T09FjDSQeWmnxbEn") {
+  return new Response(
+    JSON.stringify({
+      status: 401,
+      message: "You are not authorized to see this page.",
+    })
+  );
+}
+const { id } = Astro.params;
+if (!id) {
+  return new Response(
+    JSON.stringify({
+      status: 400,
+      message: "No inputted post id",
+    })
+  );
+}
+let post: BlogPost;
+try {
+  post = await getPost(id);
+} catch {
+  return new Response(
+    JSON.stringify({
+      status: 404,
+      message: "This id doesn't exist",
+    })
+  );
+}
+---
+
+<PostLayout
+  postTitle={post.title}
+  description={post.description}
+  createdAt={post.date_created}
+  updatedAt={post.date_created}
+  content={post.content}
+/>

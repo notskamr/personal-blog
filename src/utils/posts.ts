@@ -15,6 +15,9 @@ export async function getPosts(limit: number = 4, onlyPublished: boolean = true)
     return blogs
 }
 
+export async function getPost(id: number | string) {
+    return client.request<BlogPost>(readItem("blogs", id))
+}
 export async function getPostWithSlug(slug: string) {
 
     const post = await client.request<BlogPost[]>(
