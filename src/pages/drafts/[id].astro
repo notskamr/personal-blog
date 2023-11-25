@@ -2,7 +2,7 @@
 export const prerender = false;
 import { getPost, getPosts } from "../../utils/posts";
 import PostLayout from "../../layouts/PostLayout.astro";
-import { BlogPost } from "../../utils/types";
+import type { BlogPost } from "../../utils/types";
 
 const searchParams = new URL(Astro.request.url).searchParams;
 const key = searchParams.get("key");
