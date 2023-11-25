@@ -10,7 +10,8 @@ import Layout from "../layouts/Layout.astro";
   >
     <div class="w-full flex justify-between items-center">
       <h1 class="text-3xl md:text-4xl font-bold">
-        Hi 👋 <br />
+        <span transition:name="hi-text">Hi 👋</span>
+        <br />
         <span class="font-medium"> Welcome to my blog!</span>
       </h1>
     </div>
