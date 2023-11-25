@@ -1,12 +1,15 @@
 ---
-import { getPostWithSlug } from "../../utils/posts";
+import { getPosts } from "../../utils/posts";
 import PostLayout from "../../layouts/PostLayout.astro";
-const { slug } = Astro.params;
-if (slug) {
-  var post = await getPostWithSlug(slug);
-} else {
-  return Astro.redirect(404);
-}
+
+export const getStaticPaths = async () => {
+  const allPosts = await getPosts(-1);
+  return allPosts.map((post) => ({
+    params: { slug: post.slug },
+    props: post,
+  }));
+};
+const post = Astro.props;
 ---
 
 <PostLayout
