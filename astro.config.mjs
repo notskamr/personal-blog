@@ -8,6 +8,9 @@ import sitemap from "@astrojs/sitemap";
 export default defineConfig({
   output: "hybrid",
   site: "https://blog.vsahni.me",
+  prefetch: {
+    prefetchAll: true,
+  },
   integrations: [tailwind(), sitemap()],
   adapter: vercel(),
   build: {
