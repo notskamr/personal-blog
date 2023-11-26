@@ -1,0 +1,14 @@
+---
+export const prerender = false;
+import Nav from "../components/Nav.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Page Not Found - Varun Sahni">
+  <main
+    class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 flex flex-col text-center"
+  >
+    <h1 class="font-semibold text-4xl text-orange-500">Page not found</h1>
+    <Nav center />
+  </main>
+</Layout>

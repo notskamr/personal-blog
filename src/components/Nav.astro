@@ -1,16 +1,18 @@
 ---
 interface Props {
   navClass?: string;
+  center?: boolean;
 }
 
-const { navClass } = Astro.props;
+const { navClass, center } = Astro.props;
 ---
 
 <hr />
 <nav
   class:list={[
-    "flex text-lg items-center gap-4 mt-3 child:underline child:underline-offset-2",
+    "flex text-lg items-center gap-4 child:underline child:underline-offset-2",
     navClass,
+    center && "justify-center",
   ]}
 >
   <a href="/">Home</a>
