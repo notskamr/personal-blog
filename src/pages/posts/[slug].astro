@@ -12,10 +12,4 @@ export const getStaticPaths = async () => {
 const post = Astro.props;
 ---
 
-<PostLayout
-  postTitle={post.title}
-  description={post.description}
-  publishedAt={post.published_at}
-  updatedAt={post.date_updated}
-  content={post.content}
-/>
+<PostLayout post={post} />

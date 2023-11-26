@@ -39,11 +39,4 @@ try {
 }
 ---
 
-<PostLayout
-  navActive={false}
-  postTitle={post.title}
-  description={post.description}
-  publishedAt={post.published_at}
-  updatedAt={post.date_created}
-  content={post.content}
-/>
+<PostLayout navActive={false} post={post} />

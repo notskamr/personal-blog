@@ -1,5 +1,5 @@
 import { createDirectus, rest, readItems, readItem, staticToken } from "@directus/sdk";
-import type { BlogsSchema, BlogPost } from "./types";
+import type { BlogsSchema, BlogPost, SEO } from "./types";
 
 
 const client = createDirectus<BlogsSchema>(
@@ -17,11 +17,19 @@ export async function getPosts(limit: number = 4, onlyPublished: boolean = true)
                     published_at: {
                         _lte: new Date().toISOString()
                     }
-                }
+                },
+                fields: ["*,seo.*"]
             })
         })
     );
     return blogs
+}
+
+export async function getSEO(id: string | undefined) {
+    if (!id) {
+        return false;
+    }
+    return client.request<SEO>(readItem("seo", id))
 }
 
 export async function getPost(id: number | string) {
@@ -39,10 +47,12 @@ export async function getPostWithSlug(slug: string) {
                     _lte: new Date().toISOString()
                 }
             },
+            fields: ["*,seo.*"]
         })
     );
     return (post[0])
 }
+
 export function getClient() {
     return client;
 }

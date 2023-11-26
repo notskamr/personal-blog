@@ -24,7 +24,7 @@ const blogs = await getPosts(limit);
         image={
           post.image
             ? {
-                url: `https://blog-directus.vsahni.me/assets/${post.image}/key?=blog/${post.slug}.png`,
+                url: `https://blog-directus.vsahni.me/assets/${post.image}/${post.slug}.webp?key=blog`,
                 width: 1200,
                 height: 630,
               }

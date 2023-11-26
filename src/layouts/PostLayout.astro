@@ -1,28 +1,49 @@
 ---
 import Nav from "../components/Nav.astro";
 import { formatIsoDatetime } from "../utils/functions";
+import type { BlogPost } from "../utils/types";
 import Layout from "./Layout.astro";
+
+import { SEO } from "astro-seo";
 interface Props {
-  postTitle: string;
-  publishedAt: string;
-  updatedAt: string;
-  content: string;
-  description: string;
+  post: BlogPost;
   navActive?: boolean;
 }
-const {
-  postTitle,
-  content,
-  publishedAt,
-  updatedAt,
-  description,
-  navActive = true,
-} = Astro.props;
-const formattedUpdated = formatIsoDatetime(updatedAt);
-const formattedPublished = formatIsoDatetime(publishedAt);
+const { post, navActive = true } = Astro.props;
+const formattedUpdated = formatIsoDatetime(post.date_updated);
+const formattedPublished = formatIsoDatetime(post.published_at);
+
+let seo = post.seo;
+if (seo && !seo.og_image) {
+  if (post.image) {
+    seo.og_image = post.image;
+  }
+}
 ---
 
-<Layout title={`${postTitle} - Varun Sahni`}>
+<head>
+  <SEO
+    description={seo?.meta_description}
+    canonical={seo?.canonical_url}
+    noindex={seo?.no_index}
+    nofollow={seo?.no_follow}
+  />
+  {
+    seo?.og_image && (
+      <SEO
+        openGraph={{
+          basic: {
+            title: post.title,
+            type: "article",
+            image: `https://blog-directus.vsahni.me/assets/${seo.og_image}/${post.slug}.webp?key=blog`,
+          },
+        }}
+      />
+    )
+  }
+</head>
+
+<Layout title={`${post.title} - Varun Sahni`}>
   <main
     class="mx-auto min-h-[80vh] max-w-screen-lg scroll-smooth motion-reduce:scroll-auto font-sans text-white py-8 px-3"
   >
@@ -30,8 +51,8 @@ const formattedPublished = formatIsoDatetime(publishedAt);
       class="w-full flex flex-col md:flex-row md:items-center md:justify-between"
     >
       <div>
-        <h1 class="text-2xl md:text-3xl font-bold mb-1">{postTitle}</h1>
-        <p class="text-base md:text-lg mb-3 md:mb-0">{description}</p>
+        <h1 class="text-2xl md:text-3xl font-bold mb-1">{post.title}</h1>
+        <p class="text-base md:text-lg mb-3 md:mb-0">{post.description}</p>
       </div>
       <div class="text-base md:text-end">
         <p class="published">
@@ -51,7 +72,7 @@ const formattedPublished = formatIsoDatetime(publishedAt);
     <Nav navClass={!navActive ? "pointer-events-none" : ""} />
     <div
       class="prose prose-invert md:prose-lg prose-h2:mb-2"
-      set:html={content}
+      set:html={post.content}
     />
   </main>
   <div class="mx-auto max-w-screen-lg px-3">
