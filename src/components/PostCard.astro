@@ -49,6 +49,7 @@ const {
     const publishedAts = document.querySelectorAll(".published_at");
     publishedAts.forEach((elem) => {
       elem.textContent = parseIsoDatetimeSince(elem.id);
+      elem.appendChild(document.createElement("br"));
       const tooltipText = document.createElement("span");
       tooltipText.innerText = formatIsoDatetime(elem.id, true);
       tooltipText.classList.add("pub_tooltip");
