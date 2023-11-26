@@ -3,7 +3,6 @@ import type { APIContext } from 'astro';
 import { getPosts } from '../utils/posts';
 
 export async function GET(context: APIContext) {
-
     const allPosts = await getPosts(-1);
     return rss({
         title: "Varun Sahni's Blog",
