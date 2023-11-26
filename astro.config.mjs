@@ -16,5 +16,6 @@ export default defineConfig({
   adapter: vercel(),
   build: {
     redirects: false
-  }
+  },
+  trailingSlash: "never",
 });
