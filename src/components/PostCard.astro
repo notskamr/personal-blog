@@ -44,12 +44,15 @@ const {
   </h3>
 </a>
 <script>
-  import { parseIsoDatetimeSince } from "../utils/functions";
-
+  import { parseIsoDatetimeSince, formatIsoDatetime } from "../utils/functions";
   document.addEventListener("astro:page-load", () => {
     const publishedAts = document.querySelectorAll(".published_at");
     publishedAts.forEach((elem) => {
       elem.textContent = parseIsoDatetimeSince(elem.id);
+      const tooltipText = document.createElement("span");
+      tooltipText.innerText = formatIsoDatetime(elem.id, true);
+      tooltipText.classList.add("pub_tooltip");
+      elem.appendChild(tooltipText);
     });
   });
 </script>

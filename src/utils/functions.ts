@@ -58,35 +58,32 @@ function timeAgo(date: Date): string {
 }
 
 
-export function formatIsoDatetime(isoDatetime: string) {
+export function formatIsoDatetime(isoDatetime: string, withTime: boolean = false): string {
     const months = [
         'January', 'February', 'March', 'April',
         'May', 'June', 'July', 'August',
         'September', 'October', 'November', 'December'
     ];
-
-    // Parse the input ISO datetime string
     const inputDatetime = new Date(isoDatetime);
-
-    // Get day, month, and year
     const day = inputDatetime.getDate();
     const month = months[inputDatetime.getMonth()];
     const year = inputDatetime.getFullYear();
-
-    // Function to add ordinal suffix to the day
-    const addOrdinalSuffix = (day: number) => {
+    const addOrdinalSuffix = (day: number): string => {
         if (day >= 11 && day <= 13) {
             return `${day}th`;
         }
-        switch (day % 10) {
-            case 1: return `${day}st`;
-            case 2: return `${day}nd`;
-            case 3: return `${day}rd`;
-            default: return `${day}th`;
-        }
+        const suffix = (day % 10 === 1) ? 'st' : (day % 10 === 2) ? 'nd' : (day % 10 === 3) ? 'rd' : 'th';
+        return `${day}${suffix}`;
     };
-
-    // Format and return the result
-    const formattedDate = `${addOrdinalSuffix(day)} ${month} ${year}`;
+    let formattedDate = `${addOrdinalSuffix(day)} ${month} ${year}`;
+    if (withTime) {
+        formattedDate += `, ${format12Hour(inputDatetime.getHours(), inputDatetime.getMinutes())}`;
+    }
     return formattedDate;
+}
+
+export function format12Hour(hours: number, minutes: number): string {
+    const meridiem = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12; // Convert 0 to 12
+    return `${formattedHours}:${minutes.toString().padStart(2, '0')}${meridiem}`;
 }
