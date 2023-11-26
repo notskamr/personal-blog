@@ -37,6 +37,14 @@ if (seo && !seo.og_image) {
             type: "article",
             image: `https://blog-directus.vsahni.me/assets/${seo.og_image}/${post.slug}.webp?key=blog`,
           },
+          article: {
+            publishedTime: post.published_at,
+            authors: ["Varun Sahni"],
+          },
+        }}
+        twitter={{
+          card: "summary_large_image",
+          description: seo?.meta_description,
         }}
       />
     )
