@@ -13,6 +13,9 @@ export async function getPosts(limit: number = 4, onlyPublished: boolean = true)
                 filter: {
                     status: {
                         _eq: "published",
+                    },
+                    published_at: {
+                        _lte: new Date().toISOString()
                     }
                 }
             })
@@ -24,6 +27,7 @@ export async function getPosts(limit: number = 4, onlyPublished: boolean = true)
 export async function getPost(id: number | string) {
     return client.request<BlogPost>(readItem("blogs", id))
 }
+
 export async function getPostWithSlug(slug: string) {
     const post = await client.request<BlogPost[]>(
         readItems("blogs", {
@@ -31,6 +35,9 @@ export async function getPostWithSlug(slug: string) {
                 slug: {
                     _eq: slug,
                 },
+                published_at: {
+                    _lte: new Date().toISOString()
+                }
             },
         })
     );
