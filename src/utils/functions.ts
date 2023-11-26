@@ -1,4 +1,4 @@
-export function parseIsoDatetime(isoDatetime: string) {
+export function parseIsoDatetimeSince(isoDatetime: string) {
     // Parse the input ISO datetime string
     const inputDatetime = new Date(isoDatetime);
     const currentDatetime = new Date();
