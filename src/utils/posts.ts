@@ -9,7 +9,7 @@ const client = createDirectus<BlogsSchema>(
 export async function getPosts(limit: number = 4, onlyPublished: boolean = true) {
     let blogs = await client.request<BlogPost[]>(
         readItems("blogs", {
-            limit: limit, sort: "-date_created", ...(onlyPublished && {
+            limit: limit, sort: "-published_at", ...(onlyPublished && {
                 filter: {
                     status: {
                         _eq: "published",
