@@ -30,11 +30,12 @@ const {
     height={image.height}
     class="w-full h-[250px] md:h-[300px] object-cover object-center mb-2"
   />
-  <div class="flex justify-between items-center">
+  <div class="flex flex-col">
     <div>
       <h2 class="text-xl font-semibold">{title}</h2>
     </div>
-    <div class="published_at" id={publishedAt}></div>
+    <div class="published_at font-[400] mt-1 mb-2 italic" id={publishedAt}>
+    </div>
   </div>
   <h3 class="font-medium">
     {
@@ -51,7 +52,7 @@ const {
       elem.textContent = parseIsoDatetimeSince(elem.id);
       elem.appendChild(document.createElement("br"));
       const tooltipText = document.createElement("span");
-      tooltipText.innerText = formatIsoDatetime(elem.id, true);
+      tooltipText.innerText = formatIsoDatetime(elem.id, true) as string;
       tooltipText.classList.add("pub_tooltip");
       elem.appendChild(tooltipText);
     });

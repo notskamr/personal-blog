@@ -19,6 +19,7 @@ if (seo && !seo.og_image) {
     seo.og_image = post.image;
   }
 }
+console.log(JSON.stringify(post));
 ---
 
 <head>
@@ -54,12 +55,12 @@ if (seo && !seo.og_image) {
         <h1 class="text-2xl md:text-3xl font-bold mb-1">{post.title}</h1>
         <p class="text-base md:text-lg mb-3 md:mb-0">{post.description}</p>
       </div>
-      <div class="text-base md:text-end">
+      <div class="text-base md:text-end whitespace-nowrap pl-6">
         <p class="published">
           Published on {formattedPublished}
         </p>
         {
-          formattedPublished !== formattedUpdated ? (
+          formattedPublished !== formattedUpdated && !!formattedUpdated ? (
             <p class="text-white/70 italic updated">
               Last updated on {formattedUpdated}
             </p>

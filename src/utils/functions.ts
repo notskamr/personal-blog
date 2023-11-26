@@ -58,7 +58,10 @@ function timeAgo(date: Date): string {
 }
 
 
-export function formatIsoDatetime(isoDatetime: string, withTime: boolean = false): string {
+export function formatIsoDatetime(isoDatetime: string, withTime: boolean = false) {
+    if (!isoDatetime) {
+        return false
+    }
     const months = [
         'January', 'February', 'March', 'April',
         'May', 'June', 'July', 'August',
