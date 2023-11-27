@@ -53,7 +53,7 @@ if (seo && !seo.og_image) {
 
 <Layout title={`${post.title} - Varun Sahni`}>
   <main
-    class="mx-auto min-h-[80vh] max-w-screen-lg scroll-smooth motion-reduce:scroll-auto font-sans text-white py-8 px-3"
+    class="mx-auto min-h-[80vh] max-w-screen-lg scroll-smooth motion-reduce:scroll-auto font-sans py-8 px-3"
   >
     <div
       class="w-full flex flex-col md:flex-row md:items-center md:justify-between"
@@ -68,7 +68,7 @@ if (seo && !seo.og_image) {
         </p>
         {
           formattedPublished !== formattedUpdated && !!formattedUpdated ? (
-            <p class="text-white/70 italic updated">
+            <p class="text-black/70 dark:text-white/70 italic updated">
               Last updated on {formattedUpdated}
             </p>
           ) : (
@@ -79,7 +79,7 @@ if (seo && !seo.og_image) {
     </div>
     <Nav navClass={!navActive ? "pointer-events-none" : ""} />
     <div
-      class="prose prose-invert md:prose-lg prose-h2:mb-2"
+      class="prose dark:prose-invert md:prose-lg prose-h2:mb-2"
       set:html={post.content}
     />
   </main>
@@ -87,21 +87,46 @@ if (seo && !seo.og_image) {
     <hr class="!rounded-none !border-neutral-800" />
   </div>
   <div class="giscus max-w-screen-lg px-3 mx-auto py-8"></div>
-  <script
-    src="https://giscus.app/client.js"
-    async
-    data-repo="notskamr/blog-giscus"
-    data-repo-id="R_kgDOKx2DuA"
-    data-category="Announcements"
-    data-category-id="DIC_kwDOKx2DuM4CbPME"
-    data-mapping="pathname"
-    data-strict="0"
-    data-reactions-enabled="1"
-    data-emit-metadata="0"
-    data-input-position="top"
-    data-theme="preferred_color_scheme"
-    data-lang="en"
-    data-loading="lazy"
-    crossorigin="anonymous"
-    async></script>
 </Layout>
+<script>
+  function sendMessage(message: object) {
+    const giscus_frame = document.querySelector(
+      "iframe.giscus-frame"
+    ) as HTMLIFrameElement;
+    if (!giscus_frame) return;
+    giscus_frame?.contentWindow?.postMessage(
+      { giscus: message },
+      "https://giscus.app"
+    );
+  }
+
+  document.addEventListener("astro:page-load", () => {
+    let giscusTheme = localStorage.getItem("theme");
+    let giscusAttributes = {
+      src: "https://giscus.app/client.js",
+      "data-repo": "notskamr/blog-giscus",
+      "data-repo-id": "R_kgDOKx2DuA",
+      "data-category": "Announcements",
+      "data-category-id": "DIC_kwDOKx2DuM4CbPME",
+      "data-mapping": "pathname",
+      "data-reactions-enabled": "1",
+      "data-emit-metadata": "0",
+      "data-theme": giscusTheme,
+      "data-lang": "en",
+      crossorigin: "anonymous",
+      async: "",
+    };
+    let giscusScript = document.createElement("script");
+    Object.entries(giscusAttributes).forEach(([key, value]) =>
+      giscusScript.setAttribute(key, value as string)
+    );
+    document.body.appendChild(giscusScript);
+  });
+  document.addEventListener("theme-change", async () => {
+    sendMessage({
+      setConfig: {
+        theme: localStorage.getItem("theme"),
+      },
+    });
+  });
+</script>

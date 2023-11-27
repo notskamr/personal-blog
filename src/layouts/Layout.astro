@@ -10,7 +10,7 @@ const { title, bodyClass } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth motion-reduce:scroll-auto">
+<html lang="en" class="scroll-smooth motion-reduce:scroll-auto dark">
   <head>
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta charset="UTF-8" />
@@ -27,11 +27,28 @@ const { title, bodyClass } = Astro.props;
     />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <script>
+      function setTheme() {
+        localStorage.setItem(
+          "theme",
+          localStorage.getItem("theme") ||
+            (window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light")
+        );
+        localStorage.getItem("theme") !== "dark" &&
+          document.documentElement.classList.remove("dark");
+      }
+      setTheme();
+      document.addEventListener("astro:after-swap", () => {
+        setTheme();
+      });
+    </script>
     <ViewTransitions fallback="swap" />
   </head>
   <body
     class:list={[
-      "bg-neutral-900 print:bg-white overflow-y-scroll antialiased text-white",
+      "bg-neutral-100 text-black dark:bg-neutral-900 overflow-y-scroll antialiased dark:text-white duration-200",
       bodyClass ?? "",
     ]}
   >
