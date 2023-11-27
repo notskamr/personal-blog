@@ -22,7 +22,6 @@ const { navClass, center } = Astro.props;
   <button
     type="button"
     role="switch"
-    aria-label="Toggle Theme"
     transition:persist
     class="theme-toggle ml-1 text-black dark:text-white overflow-hidden flex flex-row duration-500 transition-[border] justify-center print:hidden w-[36px] h-[36px] rounded-md bg-transparent border-2 border-black dark:border-white"
   >
@@ -49,10 +48,10 @@ const { navClass, center } = Astro.props;
   </button>
 </nav>
 <hr />
-<script>
+<script is:inline>
   function initThemeToggle() {
     const event = new Event("theme-change");
-    const toggle = document.querySelector(".theme-toggle") as HTMLInputElement;
+    const toggle = document.querySelector(".theme-toggle");
     if (localStorage.getItem("theme") === "light") {
       toggle.checked = true;
       toggle.setAttribute("aria-checked", "true");
@@ -61,12 +60,7 @@ const { navClass, center } = Astro.props;
       toggle.setAttribute("aria-checked", "false");
     }
     toggle.onclick = (e) => {
-      let newTheme =
-        localStorage.getItem("theme") === "light" ? "dark" : "light";
-      localStorage.setItem("theme", newTheme);
-      toggle.setAttribute("aria-checked", newTheme);
-      document.documentElement.classList.toggle("dark");
-      document.dispatchEvent(event);
+      setTheme(localStorage.getItem("theme") === "light" ? "dark" : "light");
     };
   }
   document.addEventListener("astro:page-load", initThemeToggle);

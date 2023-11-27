@@ -27,17 +27,35 @@ const { title, bodyClass } = Astro.props;
     />
     <meta name="generator" content={Astro.generator} />
     <script is:inline>
-      function setTheme() {
+      const themeMatcher =
+        window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)");
+      const event = new Event("theme-change");
+
+      function setTheme(theme = undefined) {
+        if (theme !== undefined) {
+          let newTheme = theme;
+          localStorage.setItem("theme", newTheme);
+          const toggle = document.querySelector(".theme-toggle");
+          document.documentElement.classList.toggle("dark");
+          document.dispatchEvent(event);
+          return;
+        }
         localStorage.setItem(
           "theme",
           localStorage.getItem("theme") ||
-            (window.matchMedia("(prefers-color-scheme: dark)").matches
-              ? "dark"
-              : "light")
+            (themeMatcher && themeMatcher.matches ? "dark" : "light") ||
+            "dark"
         );
         localStorage.getItem("theme") !== "dark" &&
           document.documentElement.classList.remove("dark");
       }
+
+      themeMatcher.addEventListener("change", (e) => {
+        setTheme(e.matches ? "dark" : "light");
+      });
+      themeMatcher.addListener("change", (e) => {
+        setTheme(e.matches ? "dark" : "light");
+      });
       setTheme();
       document.addEventListener("astro:after-swap", () => {
         setTheme();
