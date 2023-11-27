@@ -25,13 +25,6 @@ export async function getPosts(limit: number = 4, onlyPublished: boolean = true)
     return blogs
 }
 
-export async function getSEO(id: string | undefined) {
-    if (!id) {
-        return false;
-    }
-    return client.request<SEO>(readItem("seo", id))
-}
-
 export async function getPost(id: number | string) {
     return client.request<BlogPost>(readItem("blogs", id))
 }
