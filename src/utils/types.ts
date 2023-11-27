@@ -1,9 +1,10 @@
 export interface SEO {
-    meta_description: string;
-    canonical_url: URL | string;
+    meta_description?: string;
+    canonical_url?: URL | string;
     no_index: boolean;
     no_follow: boolean;
-    og_image: string;
+    og_image?: string;
+    use_parent_fields: boolean;
 }
 export interface BlogPost {
     id: number;

@@ -14,9 +14,13 @@ const formattedUpdated = formatIsoDatetime(post.date_updated);
 const formattedPublished = formatIsoDatetime(post.published_at);
 
 let seo = post.seo;
-if (seo && !seo.og_image) {
-  if (post.image) {
+
+if (seo?.use_parent_fields) {
+  if (!seo.og_image && !!post.image) {
     seo.og_image = post.image;
+  }
+  if (!seo.meta_description) {
+    seo.meta_description = post.description;
   }
 }
 ---
