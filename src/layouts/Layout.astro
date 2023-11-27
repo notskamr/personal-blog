@@ -26,8 +26,7 @@ const { title, bodyClass } = Astro.props;
       rel="stylesheet"
     />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
-    <script>
+    <script is:inline>
       function setTheme() {
         localStorage.setItem(
           "theme",
@@ -44,6 +43,7 @@ const { title, bodyClass } = Astro.props;
         setTheme();
       });
     </script>
+    <title>{title}</title>
     <ViewTransitions fallback="swap" />
   </head>
   <body
