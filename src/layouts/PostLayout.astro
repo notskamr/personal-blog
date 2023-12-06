@@ -14,7 +14,6 @@ const formattedUpdated = formatIsoDatetime(post.date_updated);
 const formattedPublished = formatIsoDatetime(post.published_at);
 
 let seo = post.seo;
-
 if (seo?.use_parent_fields) {
   if (!seo.og_image && !!post.image) {
     seo.og_image = post.image;
@@ -103,9 +102,8 @@ if (seo?.use_parent_fields) {
       "https://giscus.app"
     );
   }
-
   document.addEventListener("astro:page-load", () => {
-    let giscusTheme = localStorage.getItem("theme");
+    let giscusTheme = localStorage.getItem("theme") ?? "dark";
     let giscusAttributes = {
       src: "https://giscus.app/client.js",
       "data-repo": "notskamr/blog-giscus",
