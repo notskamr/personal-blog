@@ -103,6 +103,7 @@ if (seo?.use_parent_fields) {
     );
   }
   document.addEventListener("astro:page-load", () => {
+    if (!window.location.pathname.startsWith("/posts")) return;
     let giscusTheme = localStorage.getItem("theme") ?? "dark";
     let giscusAttributes = {
       src: "https://giscus.app/client.js",
