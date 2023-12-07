@@ -15,23 +15,26 @@ const blogs = await getPosts(limit);
   class="grid sm:grid-cols-2 grid-cols-1 gap-y-3 gap-x-4 md:gap-x-8"
 >
   {
-    blogs?.map(async (post) => (
-      <PostCard
-        title={post.title}
-        description={post.description}
-        href={`/posts/${post.slug}`}
-        publishedAt={post.published_at}
-        image={
-          post.image
-            ? {
-                url: `https://blog-directus.vsahni.me/assets/${post.image}/${post.slug}.webp?key=blog`,
-                width: 1200,
-                height: 630,
-              }
-            : undefined
-        }
-      />
-    ))
+    blogs?.map(
+      async (post) =>
+        post?.published_at && (
+          <PostCard
+            title={post.title}
+            description={post.description}
+            href={`/posts/${post.slug}`}
+            publishedAt={post.published_at}
+            image={
+              post.image
+                ? {
+                    url: `https://blog-directus.vsahni.me/assets/${post.image}/${post.slug}.webp?key=blog`,
+                    width: 1200,
+                    height: 630,
+                  }
+                : undefined
+            }
+          />
+        )
+    )
   }
 </div>
 
