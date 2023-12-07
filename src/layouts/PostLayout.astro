@@ -10,7 +10,9 @@ interface Props {
   navActive?: boolean;
 }
 const { post, navActive = true } = Astro.props;
-const formattedUpdated = formatIsoDatetime(post.date_updated);
+const formattedUpdated = post?.date_updated
+  ? formatIsoDatetime(post.date_updated)
+  : "";
 const formattedPublished = formatIsoDatetime(post.published_at);
 
 let seo = post.seo;
