@@ -28,7 +28,7 @@ if (!slug) {
 }
 let post: BlogPost;
 try {
-  post = await getPostWithSlug(slug);
+  post = await getPostWithSlug(slug, false);
 } catch {
   return new Response(
     JSON.stringify({

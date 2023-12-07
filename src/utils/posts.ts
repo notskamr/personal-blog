@@ -29,16 +29,17 @@ export async function getPost(id: number | string) {
     return client.request<BlogPost>(readItem("blogs", id))
 }
 
-export async function getPostWithSlug(slug: string) {
+export async function getPostWithSlug(slug: string, onlyPublished: boolean = true) {
     const post = await client.request<BlogPost[]>(
         readItems("blogs", {
             filter: {
                 slug: {
                     _eq: slug,
-                },
-                published_at: {
-                    _lte: new Date().toISOString()
-                }
+                }, ...(onlyPublished && {
+                    published_at: {
+                        _lte: new Date().toISOString()
+                    }
+                })
             },
             fields: ["*,seo.*"]
         })
