@@ -13,7 +13,9 @@ const { post, navActive = true } = Astro.props;
 const formattedUpdated = post?.date_updated
   ? formatIsoDatetime(post.date_updated)
   : "";
-const formattedPublished = formatIsoDatetime(post.published_at);
+const formattedPublished = post?.published_at
+  ? formatIsoDatetime(post.published_at)
+  : "";
 
 let seo = post.seo;
 if (seo?.use_parent_fields) {
