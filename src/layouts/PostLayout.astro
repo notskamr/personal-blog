@@ -62,33 +62,41 @@ if (seo?.use_parent_fields) {
   <main
     class="mx-auto min-h-[80vh] max-w-screen-lg scroll-smooth motion-reduce:scroll-auto font-sans py-8 px-3"
   >
-    <div
-      class="w-full flex flex-col md:flex-row md:items-center md:justify-between"
-    >
-      <div>
-        <h1 class="text-2xl md:text-3xl font-bold mb-1">{post.title}</h1>
-        <p class="text-base md:text-lg mb-3 md:mb-0">{post.description}</p>
+    <article>
+      <div
+        class="w-full flex flex-col md:flex-row md:items-center md:justify-between"
+      >
+        <div>
+          <h1 class="text-2xl md:text-3xl font-bold mb-1">{post.title}</h1>
+          <p class="text-base md:text-lg mb-3 md:mb-0">{post.description}</p>
+        </div>
+        <div class="text-base md:text-end whitespace-nowrap md:pl-6">
+          <time class="published" datetime={post.published_at}>
+            Published on {formattedPublished}
+          </time>
+          {
+            formattedPublished !== formattedUpdated && !!formattedUpdated ? (
+              <>
+                <br />
+                <time
+                  datetime={post.date_updated}
+                  class="text-black/70 dark:text-white/70 italic updated"
+                >
+                  Last updated on {formattedUpdated}
+                </time>
+              </>
+            ) : (
+              ""
+            )
+          }
+        </div>
       </div>
-      <div class="text-base md:text-end whitespace-nowrap md:pl-6">
-        <p class="published">
-          Published on {formattedPublished}
-        </p>
-        {
-          formattedPublished !== formattedUpdated && !!formattedUpdated ? (
-            <p class="text-black/70 dark:text-white/70 italic updated">
-              Last updated on {formattedUpdated}
-            </p>
-          ) : (
-            ""
-          )
-        }
-      </div>
-    </div>
-    <Nav navClass={!navActive ? "pointer-events-none" : ""} />
-    <div
-      class="prose dark:prose-invert md:prose-lg prose-h2:mb-2 w-full max-w-none"
-      set:html={post.content}
-    />
+      <Nav navClass={!navActive ? "pointer-events-none" : ""} />
+      <section
+        class="prose dark:prose-invert md:prose-lg prose-h2:mb-2 w-full max-w-none"
+        set:html={post.content}
+      />
+    </article>
   </main>
   <div class="mx-auto max-w-screen-lg px-3">
     <hr class="!rounded-none !border-neutral-800" />
