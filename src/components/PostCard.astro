@@ -5,6 +5,7 @@ interface Image {
   height?: number;
 }
 interface Props {
+  id: number;
   title: string;
   description: string;
   href: string;
@@ -12,6 +13,7 @@ interface Props {
   image?: Image;
 }
 const {
+  id,
   title,
   description,
   href,
@@ -34,7 +36,20 @@ const {
     <div>
       <h2 class="text-xl font-semibold">{title}</h2>
     </div>
-    <div class="published_at font-[400] mt-1 mb-2 italic" id={publishedAt}>
+    <div class="font-[400] mt-1 mb-2 flex flex-row justify-between">
+      <div class="published_at italic" data-published={publishedAt}></div>
+      <div class="flex flex-row gap-x-2 font-bold">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          ><path
+            fill="currentColor"
+            d="M12 9a3 3 0 0 1 3 3a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3m0-4.5c5 0 9.27 3.11 11 7.5c-1.73 4.39-6 7.5-11 7.5S2.73 16.39 1 12c1.73-4.39 6-7.5 11-7.5M3.18 12a9.821 9.821 0 0 0 17.64 0a9.821 9.821 0 0 0-17.64 0"
+          ></path></svg
+        ><span class="views" data-id={id}></span>
+      </div>
     </div>
   </div>
   <h3 class="font-medium">
@@ -48,13 +63,28 @@ const {
   import { parseIsoDatetimeSince, formatIsoDatetime } from "../utils/functions";
   document.addEventListener("astro:page-load", () => {
     const publishedAts = document.querySelectorAll(".published_at");
-    publishedAts.forEach((elem) => {
-      elem.textContent = parseIsoDatetimeSince(elem.id);
+    (publishedAts as NodeListOf<HTMLElement>).forEach((elem) => {
+      elem.textContent = parseIsoDatetimeSince(
+        elem.dataset.published as string
+      );
       elem.appendChild(document.createElement("br"));
       const tooltipText = document.createElement("span");
-      tooltipText.innerText = formatIsoDatetime(elem.id, true) as string;
+      if (!elem.dataset.published) return;
+      tooltipText.innerText = formatIsoDatetime(
+        elem.dataset.published,
+        true
+      ) as string;
       tooltipText.classList.add("pub_tooltip");
       elem.appendChild(tooltipText);
+    });
+    const views = document.querySelectorAll(".views");
+    (views as NodeListOf<HTMLElement>).forEach((elem) => {
+      const id = elem.dataset.id as string;
+      fetch(`/api/get-views/${id}`, { method: "GET" })
+        .then((res) => res.json())
+        .then((data) => {
+          elem.textContent = data.views;
+        });
     });
   });
 </script>

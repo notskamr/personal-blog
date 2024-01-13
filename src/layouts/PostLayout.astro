@@ -59,6 +59,14 @@ if (seo?.use_parent_fields) {
 </head>
 
 <Layout title={`${post.title} - Varun Sahni`}>
+  <post-meta
+    data-meta={JSON.stringify({
+      id: post.id,
+      title: post.title,
+      published_at: post.published_at,
+      updated_at: post.date_updated,
+      slug: post.slug,
+    })}></post-meta>
   <main
     class="mx-auto min-h-[80vh] max-w-screen-lg scroll-smooth motion-reduce:scroll-auto font-sans py-8 px-3"
   >
@@ -115,7 +123,7 @@ if (seo?.use_parent_fields) {
     );
   }
   document.addEventListener("astro:page-load", () => {
-    if (!window.location.pathname.startsWith("/posts")) return;
+    if (!window.location.pathname.startsWith("/posts/")) return;
     let giscusTheme = localStorage.getItem("theme") ?? "dark";
     let giscusAttributes = {
       src: "https://giscus.app/client.js",
@@ -142,6 +150,25 @@ if (seo?.use_parent_fields) {
       setConfig: {
         theme: localStorage.getItem("theme"),
       },
+    });
+  });
+</script>
+<script>
+  document.addEventListener("astro:page-load", async () => {
+    const postMetaElem = document.querySelector("post-meta") as
+      | HTMLElement
+      | undefined;
+    if (!postMetaElem) return;
+    const rawPostMeta = postMetaElem.dataset.meta;
+    if (!rawPostMeta) return;
+    const postMeta = JSON.parse(rawPostMeta);
+    const { id } = postMeta;
+    await fetch("/api/increment-view", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id }),
     });
   });
 </script>

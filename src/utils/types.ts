@@ -19,6 +19,7 @@ export interface BlogPost {
     description: string;
     image?: string;
     seo?: SEO
+    views: string;
 }
 export interface BlogsSchema {
     blogs: BlogPost[]
