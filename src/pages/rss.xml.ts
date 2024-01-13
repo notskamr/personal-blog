@@ -11,7 +11,7 @@ export async function GET(context: APIContext) {
         items: allPosts.map((post) => ({
             title: post.title,
             description: post.description,
-            pubDate: new Date(post.published_at),
+            pubDate: new Date(post.published_at!),
             link: `/posts/${post.slug}`,
             author: "Varun Sahni"
         })),
