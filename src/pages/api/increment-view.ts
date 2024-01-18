@@ -9,8 +9,8 @@ export const POST: APIRoute = async ({ cookies, request }) => {
         return new Response("Invalid content type", { status: 400 });
     }
     const body = await request.json();
-    const { id } = body;
-
+    const id = parseInt((body.id as string));
+    // convert id to int
     if (!id) {
         return new Response("Missing post id", { status: 400 });
     }
@@ -29,12 +29,11 @@ export const POST: APIRoute = async ({ cookies, request }) => {
     if (!increment)
         return new Response("Failed to increment", { status: 500 });
     const cookie = cookies.get("viewed");
+    let viewed: number[] = [];
     if (cookie) {
-        const viewed = cookie.json();
+        viewed = cookie.json();
         viewed.push(id);
-        cookies.set("viewed", JSON.stringify(viewed), { httpOnly: true, path: "/", domain: import.meta.env.PROD ? ".vsahni.me" : undefined, sameSite: "strict", secure: import.meta.env.PROD });
-    } else {
-        cookies.set("viewed", JSON.stringify([id]), { httpOnly: true, path: "/", sameSite: "strict", secure: import.meta.env.PROD });
     }
+    cookies.set("viewed", JSON.stringify(viewed), { httpOnly: true, path: "/", domain: import.meta.env.PROD ? ".vsahni.me" : undefined, sameSite: "strict", secure: import.meta.env.PROD });
     return new Response("Incremented", { status: 200 });
 };

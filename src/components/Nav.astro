@@ -10,7 +10,7 @@ const { navClass, center } = Astro.props;
 <hr />
 <nav
   class:list={[
-    "flex text-lg items-center gap-4 underline underline-offset-1 decoration-1 decoration-blue-600 dark:decoration-amber-500",
+    "flex text-lg items-center gap-4 child:underline child:underline-offset-1 child:decoration-1 child:decoration-blue-600 dark:child:decoration-amber-500",
     navClass,
     center && "justify-center",
   ]}
