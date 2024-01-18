@@ -11,19 +11,20 @@ export const POST: APIRoute = async ({ cookies, request }) => {
     }
     const body = await request.json();
     const id = parseInt((body.id as string));
+
     // convert id to int
     if (!id) {
         return new Response("Missing post id", { status: 400 });
     }
 
+    if ((await cookies.get("viewed")?.json()).includes(id)) {
+        return new Response("Already viewed post", { status: 200 });
+    }
     const doesPostExist = allPosts.some(post => post.id === id);
     if (!doesPostExist) {
         return new Response("Post not found", { status: 404 });
     }
 
-    if (cookies.get("viewed")?.json().includes(id)) {
-        return new Response("Already viewed post", { status: 200 });
-    }
     const incrementTransaction = await TClient.transaction("write");
     try {
         await incrementTransaction.execute({ sql: "INSERT INTO post_views (post_id, views) VALUES (?, 1) ON CONFLICT(post_id) DO UPDATE SET views = views + 1", args: [id] });
@@ -37,6 +38,7 @@ export const POST: APIRoute = async ({ cookies, request }) => {
         incrementTransaction.close();
     }
     const cookie = cookies.get("viewed");
+    // console.log(cookie?.json());
     let viewed: number[] = [];
     if (cookie) {
         viewed = cookie.json();
