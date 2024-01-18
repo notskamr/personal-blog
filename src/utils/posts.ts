@@ -22,11 +22,11 @@ export async function getPosts(limit: number = 4, onlyPublished: boolean = true)
             })
         })
     );
-    return blogs
+    return blogs;
 }
 
 export async function getPost(id: number | string) {
-    return client.request<BlogPost>(readItem("blogs", id))
+    return client.request<BlogPost>(readItem("blogs", id));
 }
 
 export async function getPostWithSlug(slug: string, onlyPublished: boolean = true) {
@@ -44,8 +44,10 @@ export async function getPostWithSlug(slug: string, onlyPublished: boolean = tru
             fields: ["*,seo.*"]
         })
     );
-    return (post[0])
+    return (post[0]);
 }
+
+export const allPosts = await getPosts(-1);
 
 export function getClient() {
     return client;

@@ -1,9 +1,8 @@
 ---
-import { getPosts } from "../../utils/posts";
+import { allPosts } from "../../utils/posts";
 import PostLayout from "../../layouts/PostLayout.astro";
 
 export const getStaticPaths = async () => {
-  const allPosts = await getPosts(-1);
   return allPosts.map((post) => ({
     params: { slug: post.slug },
     props: post,

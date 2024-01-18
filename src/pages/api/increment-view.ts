@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
-import { getClient, getPost } from "../../utils/posts";
+import { allPosts, getClient, getPost } from "../../utils/posts";
 import { updateField, updateItem } from "@directus/sdk";
+import { TClient } from "../../db";
 
 export const prerender = false;
 
@@ -15,19 +16,26 @@ export const POST: APIRoute = async ({ cookies, request }) => {
         return new Response("Missing post id", { status: 400 });
     }
 
-    const post = await getPost(id);
-    if (!post) {
+    const doesPostExist = allPosts.some(post => post.id === id);
+    if (!doesPostExist) {
         return new Response("Post not found", { status: 404 });
     }
+
     if (cookies.get("viewed")?.json().includes(id)) {
         return new Response("Already viewed post", { status: 200 });
     }
-    const client = getClient();
-    const increment = await client.request(updateItem("blogs", id, {
-        views: parseInt(post.views) + 1
-    }));
-    if (!increment)
+    const incrementTransaction = await TClient.transaction("write");
+    try {
+        await incrementTransaction.execute({ sql: "INSERT INTO post_views (post_id, views) VALUES (?, 1) ON CONFLICT(post_id) DO UPDATE SET views = views + 1", args: [id] });
+        await incrementTransaction.commit();
+    }
+    catch (e) {
+        console.log(e);
         return new Response("Failed to increment", { status: 500 });
+    }
+    finally {
+        incrementTransaction.close();
+    }
     const cookie = cookies.get("viewed");
     let viewed: number[] = [];
     if (cookie) {
