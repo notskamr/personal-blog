@@ -165,6 +165,7 @@ if (seo?.use_parent_fields) {
     const { id } = postMeta;
     await fetch("/api/increment-view", {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
