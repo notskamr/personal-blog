@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import { allPosts, getClient, getPost } from "../../utils/posts";
 import { updateField, updateItem } from "@directus/sdk";
-import { TClient } from "../../db";
+import { getTursoClient } from "../../db";
 
 export const prerender = false;
 
@@ -17,14 +17,14 @@ export const POST: APIRoute = async ({ cookies, request }) => {
         return new Response("Missing post id", { status: 400 });
     }
 
-    if ((await cookies.get("viewed")?.json()).includes(id)) {
+    if ((await cookies.get("viewed")?.json())?.includes(id)) {
         return new Response("Already viewed post", { status: 200 });
     }
     const doesPostExist = allPosts.some(post => post.id === id);
     if (!doesPostExist) {
         return new Response("Post not found", { status: 404 });
     }
-
+    const TClient = getTursoClient();
     const incrementTransaction = await TClient.transaction("write");
     try {
         await incrementTransaction.execute({ sql: "INSERT INTO post_views (post_id, views) VALUES (?, 1) ON CONFLICT(post_id) DO UPDATE SET views = views + 1", args: [id] });
