@@ -1,6 +1,5 @@
 import type { APIRoute } from "astro";
-import { allPosts, getClient, getPost } from "../../utils/posts";
-import { updateField, updateItem } from "@directus/sdk";
+import { allPosts } from "../../utils/posts";
 import { getTursoClient } from "../../db";
 
 export const prerender = false;
@@ -16,8 +15,8 @@ export const POST: APIRoute = async ({ cookies, request }) => {
     if (!id) {
         return new Response("Missing post id", { status: 400 });
     }
-
-    if ((await cookies.get("viewed")?.json())?.includes(id)) {
+    const viewedAlready: number[] = cookies.get("viewed")?.json() ?? [];
+    if (viewedAlready.includes(id)) {
         return new Response("Already viewed post", { status: 200 });
     }
     const doesPostExist = allPosts.some(post => post.id === id);
@@ -37,13 +36,8 @@ export const POST: APIRoute = async ({ cookies, request }) => {
     finally {
         incrementTransaction.close();
     }
-    const cookie = cookies.get("viewed");
-    // console.log(cookie?.json());
-    let viewed: number[] = [];
-    if (cookie) {
-        viewed = cookie.json();
-        viewed.push(id);
-    }
-    cookies.set("viewed", JSON.stringify(viewed), { httpOnly: true, path: "/", domain: import.meta.env.PROD ? ".vsahni.me" : undefined, sameSite: "strict", secure: import.meta.env.PROD });
+
+    viewedAlready.push(id);
+    cookies.set("viewed", JSON.stringify(viewedAlready), { httpOnly: true, path: "/", sameSite: "strict", secure: import.meta.env.PROD });
     return new Response("Incremented", { status: 200 });
 };

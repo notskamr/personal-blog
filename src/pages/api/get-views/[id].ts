@@ -1,6 +1,5 @@
 export const prerender = false;
 import type { APIRoute } from "astro";
-import { getPost } from "../../../utils/posts";
 import { allPosts } from "../../../utils/posts";
 import { getTursoClient } from "../../../db";
 
