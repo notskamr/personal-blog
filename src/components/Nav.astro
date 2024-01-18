@@ -10,15 +10,15 @@ const { navClass, center } = Astro.props;
 <hr />
 <nav
   class:list={[
-    "flex text-lg items-center gap-4 child:underline child:underline-offset-2",
+    "flex text-lg items-center gap-4 underline underline-offset-1 decoration-1 decoration-blue-600 dark:decoration-amber-500",
     navClass,
     center && "justify-center",
   ]}
 >
-  <a href="/">Home</a>
-  <a href="https://vsahni.me">Portfolio</a>
-  <a href="/posts">Posts</a>
-  <a href="/rss.xml">RSS</a>
+  <a href="/">home</a>
+  <a href="https://vsahni.me">portfolio</a>
+  <a href="/posts">posts</a>
+  <a href="/rss.xml">rss</a>
   <button
     type="button"
     role="switch"
