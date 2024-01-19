@@ -24,19 +24,7 @@ export const POST: APIRoute = async ({ cookies, request }) => {
         return new Response("Post not found", { status: 404 });
     }
     const TClient = getTursoClient();
-    const incrementTransaction = await TClient.transaction("write");
-    try {
-        await incrementTransaction.execute({ sql: "INSERT INTO post_views (post_id, views) VALUES (?, 1) ON CONFLICT(post_id) DO UPDATE SET views = views + 1", args: [id] });
-        await incrementTransaction.commit();
-    }
-    catch (e) {
-        console.log(e);
-        return new Response("Failed to increment", { status: 500 });
-    }
-    finally {
-        incrementTransaction.close();
-    }
-
+    await TClient.execute({ sql: "INSERT INTO post_views (post_id, views) VALUES (?, 1) ON CONFLICT(post_id) DO UPDATE SET views = views + 1", args: [id] });
     viewedAlready.push(id);
     console.log(viewedAlready);
     cookies.set("viewed", JSON.stringify(viewedAlready), { httpOnly: true, path: "/", domain: import.meta.env.PROD ? ".vsahni.me" : undefined, sameSite: "strict", secure: import.meta.env.PROD });
