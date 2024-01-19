@@ -162,8 +162,11 @@ if (seo?.use_parent_fields) {
     const rawPostMeta = postMetaElem.dataset.meta;
     if (!rawPostMeta) return;
     const postMeta = JSON.parse(rawPostMeta);
-    const { id } = postMeta;
-    await fetch("/api/increment-view", {
+    const { id }: { id: string } = postMeta;
+    if (!id) return;
+    if (JSON.parse(localStorage.getItem("viewed") ?? "[]")?.includes(id))
+      return;
+    const _ = await fetch("/api/increment-view", {
       method: "POST",
       credentials: "include",
       headers: {
@@ -171,5 +174,16 @@ if (seo?.use_parent_fields) {
       },
       body: JSON.stringify({ id }),
     });
+    try {
+      if (_.status === 200) {
+        const viewedAlready = JSON.parse(
+          localStorage.getItem("viewed") ?? "[]"
+        );
+        viewedAlready.push(id);
+        localStorage.setItem("viewed", JSON.stringify(viewedAlready));
+      }
+    } catch (e) {
+      console.error(e);
+    }
   });
 </script>
