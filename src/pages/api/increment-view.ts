@@ -39,6 +39,6 @@ export const POST: APIRoute = async ({ cookies, request }) => {
 
     viewedAlready.push(id);
     console.log(viewedAlready);
-    cookies.set("viewed", JSON.stringify(viewedAlready), { httpOnly: true, path: "/", sameSite: "strict", secure: import.meta.env.PROD, domain: import.meta.env.DOMAIN });
+    cookies.set("viewed", JSON.stringify(viewedAlready), { httpOnly: true, path: "/", domain: import.meta.env.PROD ? ".vsahni.me" : undefined, sameSite: "strict", secure: import.meta.env.PROD });
     return new Response("Incremented", { status: 200 });
 };
