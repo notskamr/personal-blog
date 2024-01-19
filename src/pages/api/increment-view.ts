@@ -15,8 +15,8 @@ export const POST: APIRoute = async ({ cookies, request }) => {
     if (!id) {
         return new Response("Missing post id", { status: 400 });
     }
-    const viewedAlready: number[] = cookies.get("viewed")?.json() ?? [];
-    if (viewedAlready.includes(id)) {
+    const viewedAlready: number[] = cookies.get("vsahni_blog_viewed")?.json() ?? [];
+    if (viewedAlready.includes(id) || import.meta.env.DEV) {
         return new Response("Already viewed post", { status: 200 });
     }
     const doesPostExist = allPosts.some(post => post.id === id);
@@ -26,6 +26,6 @@ export const POST: APIRoute = async ({ cookies, request }) => {
     const TClient = getTursoClient();
     await TClient.execute({ sql: "INSERT INTO post_views (post_id, views) VALUES (?, 1) ON CONFLICT(post_id) DO UPDATE SET views = views + 1", args: [id] });
     viewedAlready.push(id);
-    cookies.set("viewed", JSON.stringify(viewedAlready), { httpOnly: true, path: "/", domain: import.meta.env.PROD ? ".vsahni.me" : undefined, sameSite: "lax" });
+    cookies.set("vsahni_blog_viewed", JSON.stringify(viewedAlready), { httpOnly: true, path: "/", domain: ".vsahni.me", sameSite: "none" });
     return new Response("Incremented", { status: 200 });
 };
