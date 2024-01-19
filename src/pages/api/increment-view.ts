@@ -26,6 +26,6 @@ export const POST: APIRoute = async ({ cookies, request }) => {
     const TClient = getTursoClient();
     await TClient.execute({ sql: "INSERT INTO post_views (post_id, views) VALUES (?, 1) ON CONFLICT(post_id) DO UPDATE SET views = views + 1", args: [id] });
     viewedAlready.push(id);
-    cookies.set("viewed", JSON.stringify(viewedAlready), { httpOnly: true, path: "/", domain: import.meta.env.PROD ? ".vsahni.me" : undefined, sameSite: "strict" });
+    cookies.set("viewed", JSON.stringify(viewedAlready), { httpOnly: true, path: "/", domain: import.meta.env.PROD ? ".vsahni.me" : undefined, sameSite: "lax" });
     return new Response("Incremented", { status: 200 });
 };
