@@ -164,7 +164,7 @@ if (seo?.use_parent_fields) {
     const postMeta = JSON.parse(rawPostMeta);
     const { id }: { id: string } = postMeta;
     if (!id) return;
-    if (JSON.parse(localStorage.getItem("viewed") ?? "[]")?.includes(id))
+    if (JSON.parse(sessionStorage.getItem("viewed") ?? "[]")?.includes(id))
       return;
     const _ = await fetch("/api/increment-view", {
       method: "POST",
@@ -177,10 +177,10 @@ if (seo?.use_parent_fields) {
     try {
       if (_.status === 200) {
         const viewedAlready = JSON.parse(
-          localStorage.getItem("viewed") ?? "[]"
+          sessionStorage.getItem("viewed") ?? "[]"
         );
         viewedAlready.push(id);
-        localStorage.setItem("viewed", JSON.stringify(viewedAlready));
+        sessionStorage.setItem("viewed", JSON.stringify(viewedAlready));
       }
     } catch (e) {
       console.error(e);
