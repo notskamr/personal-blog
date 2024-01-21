@@ -164,8 +164,16 @@ if (seo?.use_parent_fields) {
     const postMeta = JSON.parse(rawPostMeta);
     const { id }: { id: string } = postMeta;
     if (!id) return;
-    if (JSON.parse(sessionStorage.getItem("viewed") ?? "[]")?.includes(id))
+    try {
+      var viewedAlready = JSON.parse(sessionStorage.getItem("viewed") ?? "[]");
+    } catch (e) {
+      console.error("Malformed viewedAlready:\n", e);
       return;
+    }
+    if (viewedAlready?.includes(id)) {
+      console.log("Already viewed post");
+      return;
+    }
     const _ = await fetch("/api/increment-view", {
       method: "POST",
       credentials: "include",
@@ -176,9 +184,6 @@ if (seo?.use_parent_fields) {
     });
     try {
       if (_.status === 200) {
-        const viewedAlready = JSON.parse(
-          sessionStorage.getItem("viewed") ?? "[]"
-        );
         viewedAlready.push(id);
         sessionStorage.setItem("viewed", JSON.stringify(viewedAlready));
       }
