@@ -13,8 +13,8 @@ export async function GET(context: APIContext) {
             description: post.description,
             pubDate: new Date(post.published_at!),
             link: `/posts/${post.slug}`,
-            author: "Varun Sahni"
+            author: "Varun Sahni <contact@vsahni.me>"
         })),
         customData: `<language>en-us</language>`,
-    })
+    });
 }
