@@ -156,6 +156,7 @@ if (seo?.use_parent_fields) {
 </script>
 <script>
   document.addEventListener("astro:page-load", async () => {
+    if (!window.location.pathname.startsWith("/posts/")) return;
     const postMetaElem = document.querySelector("post-meta") as
       | HTMLElement
       | undefined;
