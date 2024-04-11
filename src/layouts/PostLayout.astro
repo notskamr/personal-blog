@@ -3,7 +3,7 @@ import Nav from "../components/Nav.astro";
 import { formatIsoDatetime } from "../utils/functions";
 import type { BlogPost } from "../utils/types";
 import Layout from "./Layout.astro";
-import marked from "marked";
+import { marked } from "marked";
 import { SEO } from "astro-seo";
 interface Props {
   post: BlogPost;
