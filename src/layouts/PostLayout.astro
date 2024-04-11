@@ -3,7 +3,7 @@ import Nav from "../components/Nav.astro";
 import { formatIsoDatetime } from "../utils/functions";
 import type { BlogPost } from "../utils/types";
 import Layout from "./Layout.astro";
-
+import marked from "marked";
 import { SEO } from "astro-seo";
 interface Props {
   post: BlogPost;
@@ -103,7 +103,7 @@ if (seo?.use_parent_fields) {
       <Nav navClass={!navActive ? "pointer-events-none" : ""} />
       <section
         class="prose dark:prose-invert md:prose-lg prose-h2:mb-2 w-full max-w-none"
-        set:html={post.content}
+        set:html={marked.parse(post.content)}
       />
     </article>
   </main>
