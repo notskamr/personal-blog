@@ -28,38 +28,64 @@ if (seo?.use_parent_fields) {
 }
 ---
 
-<head>
-  <meta charset="utf-8" />
-  <SEO
-    description={seo?.meta_description}
-    canonical={seo?.canonical_url}
-    noindex={seo?.no_index}
-    nofollow={seo?.no_follow}
-  />
-  {
-    seo?.og_image && (
-      <SEO
-        openGraph={{
-          basic: {
-            title: post.title,
-            type: "article",
-            image: `https://blog-directus.vsahni.me/assets/${seo.og_image}/${post.slug}.webp?key=blog`,
-          },
-          article: {
-            publishedTime: post.published_at,
-            authors: ["Varun Sahni"],
-          },
-        }}
-        twitter={{
-          card: "summary_large_image",
-          description: seo?.meta_description,
-        }}
-      />
-    )
-  }
-</head>
+<SEO
+  description={seo?.meta_description}
+  canonical={seo?.canonical_url}
+  noindex={seo?.no_index}
+  nofollow={seo?.no_follow}
+/>
+{
+  seo?.og_image && (
+    <SEO
+      openGraph={{
+        basic: {
+          title: post.title,
+          type: "article",
+          image: `https://blog-directus.vsahni.me/assets/${seo.og_image}/${post.slug}.webp?key=blog`,
+        },
+        article: {
+          publishedTime: post.published_at,
+          authors: ["Varun Sahni"],
+        },
+      }}
+      twitter={{
+        card: "summary_large_image",
+        description: seo?.meta_description,
+      }}
+    />
+  )
+}
 
 <Layout title={`${post.title} - Varun Sahni`}>
+  <Fragment slot="seo">
+    <SEO
+      description={seo?.meta_description}
+      canonical={seo?.canonical_url}
+      noindex={seo?.no_index}
+      nofollow={seo?.no_follow}
+    />
+    {
+      seo?.og_image && (
+        <SEO
+          openGraph={{
+            basic: {
+              title: post.title,
+              type: "article",
+              image: `https://blog-directus.vsahni.me/assets/${seo.og_image}/${post.slug}.webp?key=blog`,
+            },
+            article: {
+              publishedTime: post.published_at,
+              authors: ["Varun Sahni"],
+            },
+          }}
+          twitter={{
+            card: "summary_large_image",
+            description: seo?.meta_description,
+          }}
+        />
+      )
+    }
+  </Fragment>
   <post-meta
     data-meta={JSON.stringify({
       id: post.id,

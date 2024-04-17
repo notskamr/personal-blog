@@ -6,13 +6,11 @@ import Layout from "../layouts/Layout.astro";
 import { SEO } from "astro-seo";
 ---
 
-<head>
-  <meta charset="utf-8" />
-  <SEO
-    description="A blog to talk about anything cool or interesting that comes to my mind (probably mostly tech related!)"
-  /></head
->
 <Layout title="Varun Sahni - Blog">
+  <SEO
+    slot="seo"
+    description="A blog to talk about anything cool or interesting that comes to my mind (probably mostly tech related!)"
+  />
   <main
     class="mx-auto max-w-screen-lg scroll-smooth motion-reduce:scroll-auto font-sans py-8 px-4"
   >

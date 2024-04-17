@@ -13,6 +13,7 @@ const { title, bodyClass } = Astro.props;
 <html lang="en" class="scroll-smooth motion-reduce:scroll-auto dark">
   <head>
     <meta charset="utf-8" />
+    <slot name="seo" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="viewport" content="width=device-width" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
