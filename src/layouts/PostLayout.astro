@@ -220,3 +220,16 @@ if (seo?.use_parent_fields) {
     }
   });
 </script>
+<script>
+  for (var links = document.links, i = 0, a; (a = links[i]); i++) {
+    console.log(a.host);
+    if (
+      a.getAttribute("href")?.endsWith("?newTab=1") ||
+      (a.host !== location.host &&
+        !["", "#"].includes(a.getAttribute("href") || ""))
+    ) {
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+    }
+  }
+</script>
