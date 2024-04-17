@@ -22,7 +22,7 @@ export async function getPosts(limit: number = 4, onlyPublished: boolean = true)
     // filter blogs that have a published_at date in the future
     blogs = blogs.filter((blog) => {
         if (blog.published_at) {
-            return new Date(blog.published_at) <= new Date();
+            return new Date(blog.published_at).getTime() <= new Date().getTime();
         }
         return true;
     });
