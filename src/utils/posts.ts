@@ -21,10 +21,10 @@ export async function getPosts(limit: number = 4, onlyPublished: boolean = true)
     );
     // filter blogs that have a published_at date in the future
     blogs = blogs.filter((blog) => {
-        if (blog.published_at) {
+        if (onlyPublished && blog.published_at) {
             return new Date(blog.published_at).getTime() <= new Date().getTime();
         }
-        return true;
+        return !onlyPublished;
     });
     return blogs;
 }
@@ -34,21 +34,23 @@ export async function getPost(id: number | string) {
 }
 
 export async function getPostWithSlug(slug: string, onlyPublished: boolean = true) {
-    const post = await client.request<BlogPost[]>(
+    let posts = await client.request<BlogPost[]>(
         readItems("blogs", {
             filter: {
                 slug: {
                     _eq: slug,
-                }, ...(onlyPublished && {
-                    published_at: {
-                        _lte: new Date().toISOString()
-                    }
-                })
+                }
             },
             fields: ["*,seo.*"]
         })
     );
-    return (post[0]);
+    posts = posts.filter((post) => {
+        if (onlyPublished && post.published_at) {
+            return new Date(post.published_at).getTime() <= new Date().getTime();
+        }
+        return !onlyPublished;
+    });
+    return posts[0] || null;
 }
 
 export const allPosts = await getPosts(-1);
