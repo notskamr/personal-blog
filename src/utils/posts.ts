@@ -19,13 +19,14 @@ export async function getPosts(limit: number = 4, onlyPublished: boolean = true)
             })
         })
     );
-    // filter blogs that have a published_at date in the future
-    blogs = blogs.filter((blog) => {
-        if (onlyPublished && blog.published_at) {
-            return new Date(blog.published_at).getTime() <= new Date().getTime();
+    // filter blogs that arent published if onlyPublished is true
+    blogs = blogs.filter((post) => {
+        if (onlyPublished) {
+            return post.status === "published";
         }
-        return !onlyPublished;
+        return true;
     });
+
     return blogs;
 }
 
@@ -44,11 +45,12 @@ export async function getPostWithSlug(slug: string, onlyPublished: boolean = tru
             fields: ["*,seo.*"]
         })
     );
+    // filter blogs that arent published if onlyPublished is true
     posts = posts.filter((post) => {
-        if (onlyPublished && post.published_at) {
-            return new Date(post.published_at).getTime() <= new Date().getTime();
+        if (onlyPublished) {
+            return post.status === "published";
         }
-        return !onlyPublished;
+        return true;
     });
     return posts[0] || null;
 }
