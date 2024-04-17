@@ -54,6 +54,7 @@ export async function getPostWithSlug(slug: string, onlyPublished: boolean = tru
 }
 
 export const allPosts = await getPosts(-1);
+console.log(allPosts.map((post) => post.title));
 
 export function getClient() {
     return client;
