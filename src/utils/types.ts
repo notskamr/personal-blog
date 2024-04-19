@@ -18,9 +18,9 @@ export interface BlogPost {
     title: string;
     description: string;
     image?: string;
-    seo?: SEO
+    seo?: SEO;
     views: string;
 }
 export interface BlogsSchema {
-    blogs: BlogPost[]
+    blogs: BlogPost[];
 }
