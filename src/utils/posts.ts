@@ -19,6 +19,7 @@ export async function getPosts(limit: number = 4, onlyPublished: boolean = true)
             })
         })
     );
+
     // filter blogs that arent published if onlyPublished is true
     blogs = blogs.filter((post) => {
         if (onlyPublished) {
