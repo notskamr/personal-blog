@@ -2,10 +2,7 @@ import { defineConfig } from 'astro/config';
 import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel/serverless";
 import sitemap from "@astrojs/sitemap";
-
 import svelte from "@astrojs/svelte";
-
-
 
 /**
  * @type {import('astro').AstroIntegration}
@@ -27,10 +24,6 @@ export default defineConfig({
   prefetch: {
     prefetchAll: true
   },
-  integrations: [tailwind(), sitemap(), svelte(), startBuildIntegration],
+  integrations: [tailwind(), sitemap(), svelte()],
   adapter: vercel(),
-  build: {
-    redirects: false,
-  },
-  trailingSlash: "never",
 });
