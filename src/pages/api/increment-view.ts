@@ -1,5 +1,4 @@
 import type { APIRoute } from "astro";
-import { allPosts } from "../../utils/posts";
 import { getTursoClient } from "../../db";
 
 export const prerender = false;
@@ -19,10 +18,7 @@ export const POST: APIRoute = async ({ cookies, request }) => {
     if (viewedAlready.includes(id) || import.meta.env.DEV) {
         return new Response("Already viewed post", { status: 200 });
     }
-    const doesPostExist = allPosts.some(post => post.id === id);
-    if (!doesPostExist) {
-        return new Response("Post not found", { status: 404 });
-    }
+
     const TClient = getTursoClient();
     await TClient.execute({ sql: "INSERT INTO post_views (post_id, views) VALUES (?, 1) ON CONFLICT(post_id) DO UPDATE SET views = views + 1", args: [id] });
     viewedAlready.push(id);
